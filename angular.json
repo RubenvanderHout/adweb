@@ -60,10 +60,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "adweb:build:production"
+              "buildTarget": "adweb:build:production"
             },
             "development": {
-              "browserTarget": "adweb:build:development"
+              "buildTarget": "adweb:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +71,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "adweb:build"
+            "buildTarget": "adweb:build"
           }
         },
         "test": {

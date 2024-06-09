@@ -3,8 +3,10 @@ import { HomeComponent } from "./features/pages/home/home.component";
 import { ArchivedComponent } from './features/pages/archived/archived.component';
 import { BookkeepingComponent } from './features/pages/bookkeeping/bookkeeping.component';
 import { LoginComponent } from './features/pages/login/login.component';
-import {AuthGuard, redirectUnauthorizedTo} from '@angular/fire/auth-guard';
+import { AuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
+
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
+
 export const routes: Routes = [
 
     {
@@ -14,24 +16,27 @@ export const routes: Routes = [
     },
     {
         path: "bookkeepings",
+        canActivate: [AuthGuard],
         loadComponent: () => HomeComponent,
-        data: { name: "Bookkeepings",authGuardPipe: redirectUnauthorizedToLogin }
+        data: { name: "Bookkeepings", authGuardPipe: redirectUnauthorizedToLogin}
     },
     {
         path: "bookkeepings/:bookkeepingName",
+        canActivate: [AuthGuard],
         loadComponent: () => BookkeepingComponent,
-        data: { name: "Bookkeeping" }
+        data: { name: "Bookkeeping", authGuardPipe: redirectUnauthorizedToLogin }
     },
     {
         path: "archived",
         canActivate: [AuthGuard],
         loadComponent: () => ArchivedComponent,
-        data: { name: "Archived bookkeepings" }
+        data: { name: "Archived bookkeepings", authGuardPipe: redirectUnauthorizedToLogin }
     },
     {
         path: "archived/:bookkeepingName",
         loadComponent: () => ArchivedComponent,
-        data: { name: "Archived bookkeepings" }
+        canActivate: [AuthGuard],
+        data: { name: "Archived bookkeepings", authGuardPipe: redirectUnauthorizedToLogin }
     },
     {
         path: "login",

@@ -1,8 +1,6 @@
 import { Component,inject } from '@angular/core';
-import { getAuth, signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut} from 'firebase/auth';
-import { app } from 'src/environment/environment';
-import { connectAuthEmulator } from 'firebase/auth';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -12,29 +10,34 @@ import { AuthService } from '../../services/auth.service';
 })
 
 export class LoginComponent {
-  authservice:AuthService = inject(AuthService);
-  htmlstring;
-  constructor(){
+
+  private authservice : AuthService = inject(AuthService);
+  public htmlstring : string;
+
+  constructor(private router : Router){
     this.htmlstring =  ``
   }
-   
-  async signIn(email:string,password:string){
-    try{
-      this.authservice.signIn(email,password)
-    }catch(error){
+
+  async signIn(email:string, password:string){
+    try {
+      await this.authservice.signIn(email,password)
+      this.router.navigate(["bookkeepings"]);
+
+    } catch(error){
       this.htmlstring = `${error}`;
     }
   }
-  
+
   async signUp(email:string,password:string){
-    try{
-      this.authservice.signUp(email,password);
-    }catch(error){
+    try {
+      await this.authservice.signUp(email,password);
+      this.htmlstring = `<p>Signed up succesfully</p>`
+    } catch(error){
       this.htmlstring = `${error}`;
     }
   }
   async signOut(){
     this.authservice.signOut()
-    this.htmlstring =  `<p>Signed out</p>`
+    this.htmlstring = `<p>Signed out</p>`
   }
 }

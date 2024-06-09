@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component,inject } from '@angular/core';
 import { getAuth, signInWithEmailAndPassword,createUserWithEmailAndPassword,signOut} from 'firebase/auth';
 import { app } from 'src/environment/environment';
 import { connectAuthEmulator } from 'firebase/auth';
-
+import { AuthService } from '../../services/auth.service';
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -12,18 +12,15 @@ import { connectAuthEmulator } from 'firebase/auth';
 })
 
 export class LoginComponent {
-  auth;
+  authservice:AuthService = inject(AuthService);
   htmlstring;
   constructor(){
-    this.auth = getAuth(app);
-    this.htmlstring =  `Log in`
-    connectAuthEmulator(this.auth, "http://localhost:9099");
+    this.htmlstring =  ``
   }
    
   async signIn(email:string,password:string){
     try{
-      const userCredential = await signInWithEmailAndPassword(this.auth,email,password);
-      this.htmlstring = `Logged in as ${userCredential.user.email}`;
+      this.authservice.signIn(email,password)
     }catch(error){
       this.htmlstring = `${error}`;
     }
@@ -31,14 +28,13 @@ export class LoginComponent {
   
   async signUp(email:string,password:string){
     try{
-      const userCredential = await createUserWithEmailAndPassword(this.auth,email,password);
-      this.htmlstring = `Signed up as ${userCredential.user.email}`;
+      this.authservice.signUp(email,password);
     }catch(error){
       this.htmlstring = `${error}`;
     }
   }
   async signOut(){
-    await signOut(this.auth);
+    this.authservice.signOut()
     this.htmlstring =  `<p>Signed out</p>`
   }
 }

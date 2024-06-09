@@ -10,19 +10,19 @@ export const routes: Routes = [
     {
         path: "",
         loadComponent: () => HomeComponent,
-        data: { name: "Bookkeepings",authGuardPipe: redirectUnauthorizedToLogin }
+        data: { name: "Bookkeepings" }
     },
     {
         path: "archived",
         canActivate: [AuthGuard],
         loadComponent: () => ArchivedComponent,
-        data: { name: "Archived bookkeepings" }
+        data: { name: "Archived bookkeepings" ,authGuardPipe: redirectUnauthorizedToLogin}
     },
     {
         path: "bookkeeping",
         canActivate: [AuthGuard],
         loadComponent: () => BookkeepingComponent,
-        data: { name: "Bookkeeping" }
+        data: { name: "Bookkeeping" ,authGuardPipe: redirectUnauthorizedToLogin}
     },
     {
         path:'login',

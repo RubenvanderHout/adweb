@@ -5,9 +5,19 @@ import { BookkeepingComponent } from './features/pages/bookkeeping/bookkeeping.c
 
 export const routes: Routes = [
     {
-        path: "",
+        path: '',
+        redirectTo: '/bookkeepings',
+        pathMatch: 'full'
+    },
+    {
+        path: "bookkeepings",
         loadComponent: () => HomeComponent,
         data: { name: "Bookkeepings" }
+    },
+    {
+        path: "bookkeepings/:bookkeepingName",
+        loadComponent: () => BookkeepingComponent,
+        data: { name: "Bookkeeping" }
     },
     {
         path: "archived",
@@ -15,9 +25,8 @@ export const routes: Routes = [
         data: { name: "Archived bookkeepings" }
     },
     {
-        path: "bookkeeping",
-        loadComponent: () => BookkeepingComponent,
-        data: { name: "Bookkeeping" }
+        path: "archived/:bookkeepingName",
+        loadComponent: () => ArchivedComponent,
+        data: { name: "Archived bookkeepings" }
     },
-
 ];

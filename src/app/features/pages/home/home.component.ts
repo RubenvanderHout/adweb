@@ -1,15 +1,12 @@
 import { Component } from "@angular/core";
-import { LoginComponent } from "../../components/login/login.component";
 
 @Component({
-    selector: "app-home-page",
+    selector: "app-home",
+    standalone: true,
+    imports: [],
     templateUrl: "./home.component.html",
     styleUrls: ["./home.component.css"],
-    imports: [
-        LoginComponent
-    ],
-    standalone: true,
 })
-export default class HomeComponent{
+export class HomeComponent{
 
 }

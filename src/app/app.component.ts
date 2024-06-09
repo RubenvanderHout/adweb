@@ -7,7 +7,8 @@ import { FooterComponent } from './core/layout/footer/footer.component';
   templateUrl: './app.component.html',
   standalone: true,
   imports: [HeaderComponent, RouterOutlet, FooterComponent],
-  styleUrls: ['./app.component.css'],
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  title = 'adweb';
 }

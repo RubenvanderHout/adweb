@@ -14,13 +14,18 @@
     "@angular/common": "^17.3.5",
     "@angular/compiler": "^17.3.5",
     "@angular/core": "^17.3.5",
+    "@angular/fire": "^17.0.1",
     "@angular/forms": "^17.3.5",
     "@angular/platform-browser": "^17.3.5",
     "@angular/platform-browser-dynamic": "^17.3.5",
     "@angular/router": "^17.3.5",
     "@swimlane/ngx-charts": "^20.5.0",
+    "firebase": "^10.11.0",
+    "firebaseui": "^6.1.0",
+    "firebaseui-angular": "^6.2.1",
     "ng2-charts": "^6.0.0",
     "rxjs": "~7.8.0",
+    "save": "^2.9.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.4"
   },
@@ -36,5 +41,6 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "typescript": "~5.4.5"
-  }
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

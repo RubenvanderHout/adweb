@@ -12,11 +12,11 @@ export class AuthService {
 
   constructor() {}
 
-  async signIn(email: string, password: string) {
+  async signIn(email: string, password : string) {
     return signInWithEmailAndPassword(this.auth, email, password);
   }
 
-  async signUp(email:string, password:string){
+  async signUp(email : string, password : string){
     return createUserWithEmailAndPassword(this.auth, email, password);
   }
 

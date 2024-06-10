@@ -1,9 +1,9 @@
 import { Routes } from '@angular/router';
+import { AuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 import { HomeComponent } from "./features/pages/home/home.component";
 import { ArchivedComponent } from './features/pages/archived/archived.component';
 import { BookkeepingComponent } from './features/pages/bookkeeping/bookkeeping.component';
 import { LoginComponent } from './features/pages/login/login.component';
-import { AuthGuard, redirectUnauthorizedTo } from '@angular/fire/auth-guard';
 
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
 

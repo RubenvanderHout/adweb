@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './bookkeepingitem.component.css'
 })
 export class BookkeepingitemComponent {
-
   archive() {
     throw new Error('Method not implemented.');
   }

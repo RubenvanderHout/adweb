@@ -1,6 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { UserCredential } from '@firebase/auth';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, UserCredential } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'

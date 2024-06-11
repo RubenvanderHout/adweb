@@ -1,13 +1,10 @@
 
-<button mat-button class="button">Add</button>
+<button mat-button class="button" (click)="addBookkeeping()">Add</button>
 
-<div class="grid-container">
-    <app-bookkeepingitem></app-bookkeepingitem>
-    <app-bookkeepingitem></app-bookkeepingitem>
-    <app-bookkeepingitem></app-bookkeepingitem>
-    <app-bookkeepingitem></app-bookkeepingitem>
-    <app-bookkeepingitem></app-bookkeepingitem>
-    <app-bookkeepingitem></app-bookkeepingitem>
-    <app-bookkeepingitem></app-bookkeepingitem>
-    <app-bookkeepingitem></app-bookkeepingitem>
+<div class="grid-container" *ngIf="collection.length > 0; else noItems">
+    <app-bookkeepingitem *ngFor="let item of collection" [bookkeeping]="item"></app-bookkeepingitem>
 </div>
+<ng-template #noItems>
+    <p>No items to display</p>
+</ng-template>
+

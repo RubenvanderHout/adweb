@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { collectionData,  Firestore, collection, addDoc, doc, updateDoc } from '@angular/fire/firestore';
 import { Observable, map } from 'rxjs';
-
+import { Bookkeeping } from '../models/bookkeeping.model'
 @Injectable({
   providedIn: 'root'
 })
@@ -30,6 +30,10 @@ export class BookkeepingService {
 
     const bookkeeping : Bookkeeping = { name: name, description: description, archived: false }
     addDoc(collection(this.firestore, 'bookkeepings'), bookkeeping);
+  }
+
+  getBookkeepings():Observable<Bookkeeping[]> {
+    return this.bookkeepings$;
   }
 
   async archive(name: string) {

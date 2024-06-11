@@ -1,4 +1,4 @@
-interface Bookkeeping {
+export interface Bookkeeping {
     name: string,
     description: string,
     archived: boolean

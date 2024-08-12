@@ -1,13 +1,13 @@
 import { ApplicationConfig, importProvidersFrom} from "@angular/core";
 import { provideRouter } from "@angular/router";
+
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { provideAuth, getAuth } from '@angular/fire/auth'
+import { provideFirestore, getFirestore } from "@angular/fire/firestore"
+
 import { routes } from "./app.routes"
-import { provideFirebaseApp } from '@angular/fire/app';
-import { provideAuth } from '@angular/fire/auth'
-import { initializeApp } from 'firebase/app';
 import { environment } from '../environment/environment';
-import { provideFirestore } from '@angular/fire/firestore';
-import { getFirestore } from 'firebase/firestore';
-import { getAuth } from "firebase/auth";
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,6 +16,6 @@ export const appConfig: ApplicationConfig = {
       provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
       provideFirestore(() => getFirestore()),
       provideAuth(() => getAuth())
-  ),
+  ), provideAnimationsAsync('noop'),
   ],
 };

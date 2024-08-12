@@ -15,12 +15,6 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
-        path: "bookkeepings",
-        canActivate: [AuthGuard],
-        loadComponent: () => HomeComponent,
-        data: { name: "Bookkeepings", authGuardPipe: redirectUnauthorizedToLogin}
-    },
-    {
         path: "bookkeepings/:bookkeepingName",
         canActivate: [AuthGuard],
         loadComponent: () => BookkeepingComponent,
@@ -30,7 +24,7 @@ export const routes: Routes = [
         path: "archived",
         canActivate: [AuthGuard],
         loadComponent: () => ArchivedComponent,
-        data: { name: "Archived bookkeepings", authGuardPipe: redirectUnauthorizedToLogin }
+        data: { name: "Archived bookkeepings" ,authGuardPipe: redirectUnauthorizedToLogin}
     },
     {
         path: "archived/:bookkeepingName",

@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { collectionData,  Firestore, collection, addDoc, doc, updateDoc } from '@angular/fire/firestore';
 import { Observable, map } from 'rxjs';
 import { Bookkeeping } from '../models/bookkeeping.model'
+
 @Injectable({
   providedIn: 'root'
 })

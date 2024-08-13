@@ -1,13 +1,33 @@
-header{
-    text-align: center;
-}
-
 mat-toolbar {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
 ul {
     display: flex;
     flex-direction: row;
+    align-items: center;
+}
+
+nav mat-toolbar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 2rem;
+}
+
+.toolbar-items {
+    flex-grow: 1;
+}
+
+.toolbar-login {
+    margin-left: auto;
+}
+
+li {
+    display: flex;
+    align-items: center;
 }

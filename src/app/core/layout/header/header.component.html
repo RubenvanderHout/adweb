@@ -1,20 +1,13 @@
-<header>
+<nav>
     <mat-toolbar color="primary">
-        <mat-icon>local_fire_department</mat-icon>
-        <nav>
-            <ul>
-                <a mat-button routerLink="/bookkeepings" routerLinkActive="active">Bookkeepings</a>
-                <a mat-button routerLink="/archived" routerLinkActive="active">Archived</a>
-                <a mat-button routerLink="/bookkeepings/test" routerLinkActive="active">Bookkeeping</a>
-                <a mat-button routerLink="/login" routerLinkActive="active">Login</a>
-            </ul>
-        </nav>
-        <span>Bookkeeping application</span>
+    <ul class="toolbar-items">
+        <li><mat-icon>local_fire_department</mat-icon></li>
+        <li><a mat-button routerLink="/bookkeepings" routerLinkActive="active">Bookkeepings</a></li>
+    </ul>
+    <ul class="toolbar-login">
+        <li><a mat-button routerLink="/signin" routerLinkActive="active">Sign in</a></li>
+        <li><a mat-button routerLink="/signup" routerLinkActive="active">Sign up</a></li>
+        <li><a mat-button routerLink="/signout" routerLinkActive="active">Sign out</a></li>
+    </ul>
     </mat-toolbar>
-
-
-
-
-    <h1>{{ currentRouteName() }}</h1>
-
-</header>
+</nav>

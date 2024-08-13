@@ -1,35 +1,33 @@
 import { Component,inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './logout.component.html',
+  styleUrl: './logout.component.css'
 })
 
-export class LoginComponent {
+export class LogOutComponent {
 
   private authservice : AuthService = inject(AuthService);
   public htmlstring : string;
 
-  constructor(private router : Router){
+  constructor(){
     this.htmlstring =  ``
   }
 
-  async signIn(email : string, password : string){
-    const result = await this.authservice.signIn(email, password);
+  async signOut() {
+    const result = await this.authservice.signOut()
 
     switch (result.kind) {
       case 'ok':
-        this.router.navigate(["bookkeepings"]);
+        this.htmlstring = `<p>Signed out</p>`
         break;
       case 'err':
         this.htmlstring = `${result.error}`;
         break;
     }
   }
-
 }

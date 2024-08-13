@@ -2,10 +2,9 @@ import { Component, OnInit, inject } from "@angular/core";
 import { BookkeepingitemComponent } from "../../components/bookkeepingitem/bookkeepingitem.component";
 import { MatButton } from "@angular/material/button";
 import { BookkeepingService } from "../../services/bookkeeping.service";
-import { Observable } from "rxjs";
 import { Bookkeeping } from '../../models/bookkeeping.model'
 import { CommonModule } from "@angular/common";
-import { FormBuilder, FormGroup } from "@angular/forms";
+import { FormBuilder } from "@angular/forms";
 @Component({
     selector: "app-home",
     standalone: true,
@@ -15,11 +14,12 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 })
 export class HomeComponent implements OnInit{
     collection: Bookkeeping[] = [];
-    bookkeepingService:BookkeepingService = inject(BookkeepingService);
+    bookkeepingService: BookkeepingService = inject(BookkeepingService);
+
     constructor(private fb: FormBuilder){
-        
+
     }
-    
+
     addBookkeeping(){
         this.bookkeepingService.createBookkeeping("Boek","Vakanties")
     }
@@ -28,5 +28,5 @@ export class HomeComponent implements OnInit{
             this.collection = data;
         })
     }
-    
+
 }

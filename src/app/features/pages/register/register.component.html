@@ -1,14 +1,14 @@
 <section>
     <header>
-        <h2>Sign in to your account</h2>
+        <h2>Sign up for an account</h2>
     </header>
 
     <form>
-        <div [innerHTML]="htmlstring">Login</div>
+        <div [innerHTML]="htmlstring">Sign up</div>
         <label for="email">Email</label>
         <input type="text"  type="email" #email>
         <label for="password">Password</label>
         <input type="text" type="password" #password>
-        <button (click)="signIn(email.value,password.value)" type="button">Sign in</button>
+        <button (click)="signUp(email.value,password.value)" type="button">Sign up</button>
     </form>
 </section>

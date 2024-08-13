@@ -1,7 +1,106 @@
-/* You can add global styles to this file, and also import other style files */
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+/* Boilerplate CSS for Cross-Browser Consistency */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 62.5%; /* 1rem = 10px */
+    line-height: 1.15;
+}
+
+html, body {
+    height: 100%;
+}
 
 body {
-    display: block;
+    font-family: var(--font-family);
+    font-size: var(--font-size-base);
+    line-height: var(--line-height-base);
+    color: var(--text-color);
+    background-color: var(--background-color);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* CSS Variables */
+:root {
+    /* Color Variables */
+    --primary-color: #3498db;
+    --secondary-color: #2ecc71;
+    --accent-color: #e74c3c;
+    --background-color: #f5f5f5;
+    --text-color: #333333;
+    --link-color: #2980b9;
+    --link-hover-color: #1abc9c;
+
+    /* Font Variables */
+    --font-family-base: 'Helvetica Neue', Arial, sans-serif;
+    --font-size-base: 1.6rem;
+    --font-size-small: 1.4rem;
+    --font-size-large: 2rem;
+    --line-height-base: 1.5;
+
+    /* Spacing Variables */
+    --spacing-small: 0.8rem;
+    --spacing-medium: 1.6rem;
+    --spacing-large: 2.4rem;
+
+    /* Border Variables */
+    --border-radius-base: 0.4rem;
+    --border-width-base: 0.1rem;
+    --border-color-base: #cccccc;
+
+    /* Shadow Variables */
+    --box-shadow-base: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family);
+}
+
+a {
+    color: var(--link-color);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--link-hover-color);
+}
+
+.button {
+    background-color: var(--primary-color);
+    color: white;
+    padding: var(--spacing-small) var(--spacing-medium);
+    border: var(--border-width-base) solid var(--primary-color);
+    border-radius: var(--border-radius-base);
+    box-shadow: var(--box-shadow-base);
+    font-size: var(--font-size-base);
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+}
+
+.button:hover {
+    background-color: var(--secondary-color);
+    border-color: var(--secondary-color);
+}
+
+app-root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+}
+
+/* Styles the content of the router outlet page */
+router-outlet + * {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin-left: 5%;
+    margin-right: 5%;
+
 }

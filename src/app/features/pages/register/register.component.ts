@@ -1,30 +1,29 @@
 import { Component,inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [],
-  templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  templateUrl: './register.component.html',
+  styleUrl: './register.component.css'
 })
 
-export class LoginComponent {
+export class RegisterComponent {
 
   private authservice : AuthService = inject(AuthService);
   public htmlstring : string;
 
-  constructor(private router : Router){
+  constructor(){
     this.htmlstring =  ``
   }
 
-  async signIn(email : string, password : string){
-    const result = await this.authservice.signIn(email, password);
+  async signUp(email: string, password: string) : Promise<void> {
+    const result = await this.authservice.signUp(email, password);
 
     switch (result.kind) {
       case 'ok':
-        this.router.navigate(["bookkeepings"]);
+        this.htmlstring = `<p>Signed up succesfully</p>`
         break;
       case 'err':
         this.htmlstring = `${result.error}`;

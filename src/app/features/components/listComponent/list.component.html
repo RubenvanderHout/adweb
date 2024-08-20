@@ -1,0 +1,47 @@
+<mat-grid-list
+[cols]="gridCols"
+gutterSize="16px"
+rowHeight="4:1"
+class="grid-list">
+
+    <mat-grid-tile *ngFor="let bookkeeping of collection; let i = index">
+        <mat-card class="full-card">
+            <mat-card-header>
+                <mat-card-title class="centered-title">
+                    <div class="title-container">
+                        <span *ngIf="isEditing()">
+                            <a class="card-navigation" (click)="navigateToBookkeeping(bookkeeping.name)">
+                                {{ bookkeeping.name }}
+                            </a>
+                        </span>
+                        <span *ngIf="!isEditing()">
+                            <input matInput [(ngModel)]="bookkeeping.name" />
+                        </span>
+                    </div>
+                </mat-card-title>
+                <div class="action-buttons">
+                    <button mat-icon-button color="accent" (click)="toggleEdit(bookkeeping)">
+                        <mat-icon>{{ isEditing() ? 'save' : 'edit' }}</mat-icon>
+                    </button>
+                    <button mat-icon-button color="warn" (click)="archive(bookkeeping.name)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </mat-card-header>
+            <mat-card-content>
+                <div *ngIf="isEditing()">
+                    <p class="centered-text">{{ bookkeeping.description }}</p>
+                </div>
+                <div *ngIf="!isEditing()">
+                    <input matInput [(ngModel)]="bookkeeping.description" placeholder="Description" />
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </mat-grid-tile>
+
+</mat-grid-list>
+
+
+<ng-template #noItems>
+    <p>No items to display</p>
+</ng-template>

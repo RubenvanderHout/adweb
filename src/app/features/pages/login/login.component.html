@@ -3,8 +3,12 @@
         <h2>Sign in to your account</h2>
     </header>
 
+
+    @if (errorMessage) {
+        <div class="error">{{ errorMessage }}</div>
+    }
+
     <form>
-        <div [innerHTML]="htmlstring">Login</div>
         <label for="email">Email</label>
         <input type="text"  type="email" #email>
         <label for="password">Password</label>

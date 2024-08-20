@@ -1,7 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { collectionData,  Firestore, collection, addDoc, doc, updateDoc } from '@angular/fire/firestore';
+import { collectionData,  Firestore, collection, addDoc, updateDoc, query, where, getDocs } from '@angular/fire/firestore';
 import { Observable, map } from 'rxjs';
 import { Bookkeeping } from '../models/bookkeeping.model'
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -9,42 +10,86 @@ import { Bookkeeping } from '../models/bookkeeping.model'
 export class BookkeepingService {
 
   private firestore : Firestore = inject(Firestore);
+  private authService: AuthService = inject(AuthService);
 
   public bookkeepings$!: Observable<Bookkeeping[]>;
   public archivedBookkeepings$!: Observable<Bookkeeping[]>;
-  public nonArchivedBookkeepings$!: Observable<Bookkeeping[]>;
+
+  private currentUser = this.authService.currentUserSignal();
 
   constructor() {
-    const bookkeepingsCollection = collection(this.firestore, 'bookkeepings');
-    this.bookkeepings$ = collectionData(bookkeepingsCollection) as Observable<Bookkeeping[]>;
+    if (this.currentUser?.userId) {
+      const userBookkeepingsCollection = collection(this.firestore, `user/${this.currentUser.userId}/bookkeepings`);
 
-    this.bookkeepings$ = this.bookkeepings$.pipe(
-      map(bookkeepings => bookkeepings.filter(b => !b.archived))
-    );
-    this.archivedBookkeepings$ = this.bookkeepings$.pipe(
-      map(bookkeepings => bookkeepings.filter(b => b.archived))
-    );
+      this.bookkeepings$ = collectionData(userBookkeepingsCollection, { idField: 'id' }) as Observable<Bookkeeping[]>;
+
+      this.bookkeepings$.subscribe(bookkeepings => {
+        console.log(bookkeepings);
+      });
+
+      this.archivedBookkeepings$ = this.bookkeepings$.pipe(
+        map(bookkeepings => bookkeepings.filter(b => b.archived))
+      );
+
+      this.bookkeepings$ = this.bookkeepings$.pipe(
+        map(bookkeepings => bookkeepings.filter(b => !b.archived))
+      );
+    } else {
+      throw new Error('User is not authenticated');
+    }
   }
 
-  createBookkeeping(name: string, description : string){
-    if(!name || !description) { return };
+  async createBookkeeping(name: string, description : string){
+    const bookkeeping = { name: name, description: description, archived: false }
+    const currentUser = this.authService.currentUserSignal();
 
-    const bookkeeping : Bookkeeping = { name: name, description: description, archived: false }
-    addDoc(collection(this.firestore, 'bookkeepings'), bookkeeping);
+    if (currentUser?.userId) {
+      const userBookkeepingsCollection = collection(this.firestore, `user/${currentUser.userId}/bookkeepings/`);
+      const bookkeepingsCollection = collection(this.firestore, `bookkeepings/`);
+
+      await Promise.all([
+        addDoc(userBookkeepingsCollection, bookkeeping),
+        addDoc(bookkeepingsCollection, bookkeeping)
+      ])
+    } else {
+      throw new Error('User is not authenticated');
+    }
   }
 
-  getBookkeepings():Observable<Bookkeeping[]> {
+  getBookkeepings() : Observable<Bookkeeping[]> {
     return this.bookkeepings$;
   }
 
+  getArchivedBookkeepings() : Observable<Bookkeeping[]> {
+    return this.archivedBookkeepings$;
+  }
+
   async archive(name: string) {
-    const bookkeepingRef = doc(this.firestore, 'bookkeepings', name);
-    await updateDoc(bookkeepingRef, { archived: true });
+
+    if (!this.currentUser?.userId) {
+      throw new Error('User is not authenticated');
+    }
+
+    const bookkeepingsCollection = collection(this.firestore, `user/${this.currentUser.userId}/bookkeepings/`);
+    const q = query(bookkeepingsCollection, where('name', '==', name));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (doc) => {
+      await updateDoc(doc.ref, { archived: true });
+    });
   }
 
   async unarchive(name: string) {
-    const bookkeepingRef = doc(this.firestore, 'bookkeepings', name);
-    await updateDoc(bookkeepingRef, { archived: false });
+
+    if (!this.currentUser?.userId) {
+      throw new Error('User is not authenticated');
+    }
+
+    const bookkeepingsCollection = collection(this.firestore, `user/${this.currentUser.userId}/bookkeepings/`);
+    const q = query(bookkeepingsCollection, where('name', '==', name));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach(async (doc) => {
+      await updateDoc(doc.ref, { archived: false });
+    });
   }
 
 }

@@ -3,12 +3,17 @@
         <h2>Sign up for an account</h2>
     </header>
 
+    @if (errorMessage) {
+        <div class="error">{{ errorMessage }}</div>
+    }
+
     <form>
-        <div [innerHTML]="htmlstring">Sign up</div>
         <label for="email">Email</label>
         <input type="text"  type="email" #email>
+        <label for="username">Username</label>
+        <input type="text" type="username" #username>
         <label for="password">Password</label>
         <input type="text" type="password" #password>
-        <button (click)="signUp(email.value,password.value)" type="button">Sign up</button>
+        <button (click)="signUp(email.value, username.value, password.value)" type="button">Sign up</button>
     </form>
 </section>

@@ -1,56 +1,36 @@
-import { Injectable, inject } from '@angular/core';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, UserCredential } from '@angular/fire/auth';
-import { Result, err, ok } from 'src/app/result.type';
+import { Injectable, inject, signal } from '@angular/core';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, updateProfile, user, UserCredential } from '@angular/fire/auth';
+import { from } from 'rxjs';
+import { User as DomainUser } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private auth: Auth = inject(Auth);
-  public userCredentials: UserCredential | undefined;
+  firebaseAuth = inject(Auth);
+  userCredentials: UserCredential | undefined;
+  user$ = user(this.firebaseAuth);
+  currentUserSignal = signal<DomainUser | null | undefined>(undefined);
 
   constructor() {}
 
-  async signIn(email: string, password : string) : Promise<Result<UserCredential, Error>> {
-    try {
-      const value = await signInWithEmailAndPassword(this.auth, email, password);
-      return ok(value);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log(error);
-        return err(error);
-      } else {
-        return err(new Error('An unknown error occurred'));
-      }
-    }
+  register(email: string, username: string, password: string) {
+    const promise = createUserWithEmailAndPassword(this.firebaseAuth, email, password);
+    promise.then(response => updateProfile(response.user, { displayName: username }));
+
+    return from(promise);
   }
 
-  async signUp(email: string, password: string): Promise<Result<UserCredential, Error>>{
-    try {
-      const value = await createUserWithEmailAndPassword(this.auth, email, password);
-      return ok(value);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log(error);
-        return err(error);
-      } else {
-        return err(new Error('An unknown error occurred'));
-      }
-    }
+  login(email: string, password : string){
+    const promise = signInWithEmailAndPassword(this.firebaseAuth, email, password);
+    return from(promise);
   }
 
-  async signOut(): Promise<Result<null, Error >> {
-    try {
-      await signOut(this.auth);
-      return ok(null);
-    } catch (error) {
-      if (error instanceof Error) {
-        console.log(error);
-        return err(error);
-      } else {
-        return err(new Error('An unknown error occurred'));
-      }
-    }
+
+  logout() {
+    const promise = signOut(this.firebaseAuth);
+    return from(promise);
   }
+
 }

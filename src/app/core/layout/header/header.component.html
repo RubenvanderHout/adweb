@@ -3,11 +3,19 @@
     <ul class="toolbar-items">
         <li><mat-icon>local_fire_department</mat-icon></li>
         <li><a mat-button routerLink="/bookkeepings" routerLinkActive="active">Bookkeepings</a></li>
+        <li><a mat-button routerLink="/archived" routerLinkActive="active">Archive</a></li>
     </ul>
-    <ul class="toolbar-login">
-        <li><a mat-button routerLink="/signin" routerLinkActive="active">Sign in</a></li>
-        <li><a mat-button routerLink="/signup" routerLinkActive="active">Sign up</a></li>
-        <li><a mat-button routerLink="/signout" routerLinkActive="active">Sign out</a></li>
-    </ul>
+
+    @if(isLoggedIn()){
+        <ul class="toolbar-login">
+            <li><a mat-button routerLink="/signout" routerLinkActive="active">Sign out</a></li>
+        </ul>
+    }
+    @else {
+        <ul class="toolbar-login">
+            <li><a mat-button routerLink="/signin" routerLinkActive="active">Sign in</a></li>
+            <li><a mat-button routerLink="/signup" routerLinkActive="active">Sign up</a></li>
+        </ul>
+    }
     </mat-toolbar>
 </nav>

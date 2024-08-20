@@ -1,0 +1,27 @@
+<div class="card-grid">
+
+    <div class="add-card-form">
+        <mat-form-field appearance="fill">
+            <mat-label>Name</mat-label>
+            <input matInput placeholder="Name" [(ngModel)]="newCard.name" />
+            <div *ngIf="addBookkeepingError" class="error">{{ addBookkeepingError }}</div>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+            <mat-label>Description</mat-label>
+            <input matInput placeholder="Description" [(ngModel)]="newCard.description" />
+        </mat-form-field>
+        <button mat-raised-button color="primary" (click)="addBookkeeping()">Add</button>
+    </div>
+
+    <app-list
+    (archiveCard)="archive($event)"
+    (editToggle)="toggleEdit($event)"
+    [collection]="collection"
+    >
+
+    </app-list>
+</div>
+
+<ng-template #noItems>
+    <p>No items to display</p>
+</ng-template>

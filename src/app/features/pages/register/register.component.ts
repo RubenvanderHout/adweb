@@ -1,5 +1,6 @@
 import { Component,inject } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -12,23 +13,21 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterComponent {
 
   private authservice : AuthService = inject(AuthService);
-  public htmlstring : string;
+  public errorMessage : string | null = null;
 
-  constructor(){
-    this.htmlstring =  ``
+  constructor(private router: Router){}
+
+  signUp(email: string, username : string, password: string) {
+    this.authservice
+      .register(email, username, password)
+      .subscribe({
+        next: (_) => {
+          this.router.navigate(['/signin']);
+        },
+        error: (error) => {
+          this.errorMessage = `${error}`;
+        }
+      });
   }
 
-  async signUp(email: string, password: string) : Promise<void> {
-    const result = await this.authservice.signUp(email, password);
-
-    switch (result.kind) {
-      case 'ok':
-        this.htmlstring = `<p>Signed up succesfully</p>`
-        break;
-      case 'err':
-        this.htmlstring = `${result.error}`;
-        break;
-    }
-  }
-
-}
+ }

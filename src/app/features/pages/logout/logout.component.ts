@@ -1,5 +1,6 @@
-import { Component,inject } from '@angular/core';
+import { Component,inject, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,25 +10,28 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './logout.component.css'
 })
 
-export class LogOutComponent {
+export class LogOutComponent implements OnInit {
 
   private authservice : AuthService = inject(AuthService);
-  public htmlstring : string;
 
-  constructor(){
-    this.htmlstring =  ``
+  constructor(private router : Router){}
+
+  ngOnInit(): void {
+    this.authservice.user$.subscribe(user => {
+      if (user) {
+        this.authservice.currentUserSignal.set({
+          userId: user.uid,
+          email: user.email!,
+          username: user.displayName!,
+        })
+      } else {
+        this.authservice.currentUserSignal.set(null);
+      }
+    });
   }
 
-  async signOut() {
-    const result = await this.authservice.signOut()
-
-    switch (result.kind) {
-      case 'ok':
-        this.htmlstring = `<p>Signed out</p>`
-        break;
-      case 'err':
-        this.htmlstring = `${result.error}`;
-        break;
-    }
+  signOut() {
+    this.authservice.logout()
+    this.router.navigate(['/signin']);
   }
 }

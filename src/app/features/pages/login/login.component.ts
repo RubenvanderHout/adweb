@@ -13,23 +13,22 @@ import { Router } from '@angular/router';
 export class LoginComponent {
 
   private authservice : AuthService = inject(AuthService);
-  public htmlstring : string;
+  public errorMessage: string | null = null;
 
-  constructor(private router : Router){
-    this.htmlstring =  ``
-  }
+  constructor(private router : Router){}
+
 
   async signIn(email : string, password : string){
-    const result = await this.authservice.signIn(email, password);
-
-    switch (result.kind) {
-      case 'ok':
-        this.router.navigate(["bookkeepings"]);
-        break;
-      case 'err':
-        this.htmlstring = `${result.error}`;
-        break;
-    }
+    this.authservice
+      .login(email, password)
+      .subscribe({
+        next: (_) => {
+          this.router.navigate(['/bookkeepings']);
+        },
+        error: (error) => {
+          this.errorMessage = `${error}`;
+        }
+      });
   }
 
 }

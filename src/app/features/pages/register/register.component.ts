@@ -17,17 +17,16 @@ export class RegisterComponent {
 
   constructor(private router: Router){}
 
-  signUp(email: string, username : string, password: string) {
-    this.authservice
-      .register(email, username, password)
-      .subscribe({
-        next: (_) => {
-          this.router.navigate(['/signin']);
-        },
-        error: (error) => {
-          this.errorMessage = `${error}`;
-        }
-      });
+  async signUp(email: string, username : string, password: string) {
+    const result = await this.authservice.register(email, username, password)
+    result.subscribe({
+      next: (_) => {
+        this.router.navigate(['/signin']);
+      },
+      error: (error) => {
+        this.errorMessage = `${error}`;
+      }
+    });
   }
 
  }

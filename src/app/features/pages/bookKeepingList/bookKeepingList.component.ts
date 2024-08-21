@@ -34,7 +34,15 @@ export class BookKeepingListComponent implements OnInit {
     public collection: Bookkeeping[] = [];
     bookService: BookkeepingService = inject(BookkeepingService);
 
-    newCard: Bookkeeping = { id: '', name: '', description: '', archived: false }
+    newCard: Bookkeeping = {
+        id: '',
+        name: '',
+        description: '',
+        archived: false,
+        owner: "",
+        transactions: [],
+        categories: []
+    }
     gridCols: number = 3;
 
     addBookkeepingError: string = '';
@@ -72,11 +80,11 @@ export class BookKeepingListComponent implements OnInit {
             return;
         }
 
-        this.bookService.createBookkeeping(this.newCard.name, this.newCard.description);
+        this.bookService.createBookkeeping(this.newCard);
     }
 
-    archive(cardName: string) {
-        this.bookService.archive(cardName);
+    archive(id: string) {
+        this.bookService.archive(id);
     }
 
     toggleEdit(card: any) {

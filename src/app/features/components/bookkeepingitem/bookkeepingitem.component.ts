@@ -17,6 +17,9 @@ export class BookkeepingitemComponent {
 
   }
 
+
+
+
   archive() {
     this.bookservice.archive(this.bookkeeping.name)
   }

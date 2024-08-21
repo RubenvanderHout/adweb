@@ -23,7 +23,7 @@ class="grid-list">
                     <button mat-icon-button color="accent" (click)="toggleEdit(bookkeeping)">
                         <mat-icon>{{ isEditing() ? 'save' : 'edit' }}</mat-icon>
                     </button>
-                    <button mat-icon-button color="warn" (click)="archive(bookkeeping.name)">
+                    <button mat-icon-button color="warn" (click)="archive(bookkeeping.id)">
                         <mat-icon>delete</mat-icon>
                     </button>
                 </div>

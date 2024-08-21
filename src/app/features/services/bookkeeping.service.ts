@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { collectionData,  Firestore, collection, addDoc, updateDoc, query, where, getDocs } from '@angular/fire/firestore';
+import { collectionData,  Firestore, collection, addDoc, updateDoc, query, where, doc } from '@angular/fire/firestore';
 import { Observable, map } from 'rxjs';
 import { Bookkeeping } from '../models/bookkeeping.model'
 import { AuthService } from './auth.service';
@@ -19,18 +19,15 @@ export class BookkeepingService {
 
   constructor() {
     if (this.currentUser?.userId) {
-      const userBookkeepingsCollection = collection(this.firestore, `user/${this.currentUser.userId}/bookkeepings`);
 
-      this.bookkeepings$ = collectionData(userBookkeepingsCollection, { idField: 'id' }) as Observable<Bookkeeping[]>;
+      const userBookkeepingsCollection = collection(this.firestore, 'bookkeepings');
+      const userQuery = query(userBookkeepingsCollection, where('owner', '==', this.currentUser.userId));
 
-      this.bookkeepings$.subscribe(bookkeepings => {
-        console.log(bookkeepings);
-      });
+      this.bookkeepings$ = collectionData(userQuery, { idField: 'id' }) as Observable<Bookkeeping[]>;
 
       this.archivedBookkeepings$ = this.bookkeepings$.pipe(
         map(bookkeepings => bookkeepings.filter(b => b.archived))
       );
-
       this.bookkeepings$ = this.bookkeepings$.pipe(
         map(bookkeepings => bookkeepings.filter(b => !b.archived))
       );
@@ -39,18 +36,18 @@ export class BookkeepingService {
     }
   }
 
-  async createBookkeeping(name: string, description : string){
-    const bookkeeping = { name: name, description: description, archived: false }
+  async createBookkeeping(bookkeeping : Bookkeeping){
+
     const currentUser = this.authService.currentUserSignal();
 
-    if (currentUser?.userId) {
-      const userBookkeepingsCollection = collection(this.firestore, `user/${currentUser.userId}/bookkeepings/`);
-      const bookkeepingsCollection = collection(this.firestore, `bookkeepings/`);
+    bookkeeping.owner = currentUser?.userId ?? '';
 
-      await Promise.all([
-        addDoc(userBookkeepingsCollection, bookkeeping),
-        addDoc(bookkeepingsCollection, bookkeeping)
-      ])
+    //@ts-ignore
+    delete bookkeeping.id;
+
+    if (currentUser?.userId) {
+      const bookkeepingsCollection = collection(this.firestore, `bookkeepings/`);
+      await addDoc(bookkeepingsCollection, bookkeeping)
     } else {
       throw new Error('User is not authenticated');
     }
@@ -64,32 +61,22 @@ export class BookkeepingService {
     return this.archivedBookkeepings$;
   }
 
-  async archive(name: string) {
+  async archive(id: string) {
 
     if (!this.currentUser?.userId) {
       throw new Error('User is not authenticated');
     }
-
-    const bookkeepingsCollection = collection(this.firestore, `user/${this.currentUser.userId}/bookkeepings/`);
-    const q = query(bookkeepingsCollection, where('name', '==', name));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (doc) => {
-      await updateDoc(doc.ref, { archived: true });
-    });
+    const docRef = doc(this.firestore, `/bookkeepings/${id}`);
+    await updateDoc(docRef, { archived: true });
   }
 
-  async unarchive(name: string) {
+  async unarchive(id: string) {
 
     if (!this.currentUser?.userId) {
       throw new Error('User is not authenticated');
     }
-
-    const bookkeepingsCollection = collection(this.firestore, `user/${this.currentUser.userId}/bookkeepings/`);
-    const q = query(bookkeepingsCollection, where('name', '==', name));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach(async (doc) => {
-      await updateDoc(doc.ref, { archived: false });
-    });
+    const docRef = doc(this.firestore, `/bookkeepings/${id}`);
+    await updateDoc(docRef, { archived: false });
   }
 
 }
